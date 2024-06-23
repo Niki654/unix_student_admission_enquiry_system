@@ -1,0 +1,135 @@
+#!/bin/bash
+# BITM Engineering Admission Enquiry System
+# Set variables
+computer_science_seats=50
+computer_science_fee=100000
+electronics_seats=40
+electronics_fee=120000
+mechanical_seats=30
+mechanical_fee=110000
+civil_seats=20
+civil_fee=130000
+computer_science_booked_seats=0
+electronics_booked_seats=0
+mechanical_booked_seats=0
+civil_booked_seats=0
+registration_file="registration.txt"
+# Display menu
+while true; do
+echo "Welcome to the BITM Engineering Admission Enquiry System"
+echo "Please select an option:"
+echo "1. Check available seats and fee for Computer Science"
+echo "2. Check available seats and fee for Electronics"
+echo "3. Check available seats and fee for Mechanical"
+echo "4. Check available seats and fee for Civil"
+echo "5. Register for admission"
+echo "6. Check the number of people who have registered for particular seat."
+echo "7.Exit"
+# Get user input
+echo "Enter option number: "read option
+# Process user input
+case $option in
+1)
+echo "Available seats for Computer Science: $((50 - computer_science_booked_seats))"
+echo "Course fee for Computer Science: $computer_science_fee"
+;;
+2)
+echo "Available seats for Electronics: $((40 - electronics_booked_seats))"
+echo "Course fee for Electronics: $electronics_fee;;
+3)
+echo "Available seats for Mechanical: $((30 - mechanical_booked_seats))"
+echo "Course fee for Mechanical: $mechanical_fee"
+;;
+4)
+echo "Available seats for Civil: $((20 - civil_booked_seats))"
+echo "Course fee for Civil: $civil_fee"
+;;
+7)
+echo "Goodbye!"
+break
+;;
+6)
+echo "Please select an option:"
+echo "1. View details of people who have registered for Computer Science"
+echo "2. View details of people who have registered for Electronics"
+echo "3. View details of people who have registered for Mechanical"
+echo "4. View details of people who have registered for Civil"
+echo "5. Return to main menu"
+echo "Enter option number: " read suboption
+case $suboption in
+1)
+grep "cse" $registration_file
+;;
+2)
+grep "ece" $registration_file
+;;
+3)
+grep "mech" $registration_file
+;;
+4)
+grep "civil" $registration_file
+;;
+5)
+continue
+;;
+*)
+echo "Invalid option"
+;;
+esac
+echo "Enter your full name: "read name
+echo "Enter your email address: " read email
+while true; do
+echo "Enter phone number: "read phone
+if [[ ${#phone} -ge 10 ]]; then
+break
+else
+echo "Invalid phone number. Must be at least 10 digits."
+fi
+done
+echo "Phone number entered: $phone"
+echo "Enter your preferred course (1-4): "read course_choice
+case $course_choice in
+1)
+if [ $((50 - computer_science_booked_seats)) -gt 0 ]; then
+echo "Thank you, $name! Your admission request for Computer Science has been received. We will
+contact you at $email or $phone with further instructions."
+((computer_science_booked_seats++))
+echo "$name|$email|$phone|$course_choice : cse" >> registration.txt
+else
+echo "Sorry, $name! Computer Science seats are not available at this time. Please choose another
+course."
+fi
+;;
+2)
+if [ $((40 - electronics_booked_seats)) -gt 0 ]; then
+echo "Thank you, $name! Your admission request for Electronics has been received. We will contact
+you at $email or $phone with further instructions."
+((electronics_booked_seats++))
+echo "$name|$email|$phone|$course_choice : ece">> registration.txt
+else
+echo "Sorry, $name! Electronics seats are not available at this time. Please choose another course."
+fi
+;;
+3)
+if [ $((30 - mechanical_booked_seats)) -gt 0 ]; then
+echo "Thank you, $name! Your admission request for Mechanical has been received. We will contact
+you at $email or $phone with further instructions."
+((mechanical_booked_seats++))
+echo "$name|$email|$phone|$course_choice : mech">> registration.txt
+else
+echo "Sorry, $name! Mechanical seats are not available at this time. Please choose another course."
+fi
+;;
+4)
+if [ $((20 - civil_booked_seats)) -gt 0 ]; then
+echo "Thank you, $name! Your admission request for Civil has been received. We will contact you at
+$email or $phone with further instructions."
+((civil_booked_seats++))
+echo "$name|$email|$phone|$course_choice : civil">> registration.txt
+else
+echo "Sorry, $name! Civil seats are not available at this time. Please choose another course."
+fi
+;;
+esac
+esac
+done
